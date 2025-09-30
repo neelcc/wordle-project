@@ -9,7 +9,8 @@ const Auth = () => {
     const [ password, setPassword ] = useState('')
     const navigate = useNavigate()
     const { setUser , setToken  } = useContext(AppContext)
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+    const BACKEND_URL = import.meta.env.VITE_ONRENDER_URL
+
 
     
     const handleAuth = async (e) => {
