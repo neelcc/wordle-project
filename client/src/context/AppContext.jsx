@@ -8,7 +8,7 @@ export const AppContext = createContext();
 export const AppContextProvider = ({children}) => {
     
     const navigate = useNavigate()
-    const BACKEND_URL = import.meta.env.VITE_ONRENDER_URL
+    const BACKEND_URL=import.meta.env.VITE_ONRENDER_URL
 
     const [ gameId , setGameId ] = useState(localStorage.getItem('gameId'))
     const [ token , setToken ] = useState(localStorage.getItem('token'))
@@ -53,6 +53,10 @@ export const AppContextProvider = ({children}) => {
         }
     },[token])
 
+    useEffect(()=>{
+        console.log(BACKEND_URL);
+        
+    },[])
     
     
     const getPoints = async () => {

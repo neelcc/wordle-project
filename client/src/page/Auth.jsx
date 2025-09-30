@@ -9,10 +9,14 @@ const Auth = () => {
     const [ password, setPassword ] = useState('')
     const navigate = useNavigate()
     const { setUser , setToken  } = useContext(AppContext)
-    const BACKEND_URL = import.meta.env.VITE_ONRENDER_URL
+    const BACKEND_URL=import.meta.env.VITE_ONRENDER_URL
 
 
-    
+    useEffect(()=>{
+        console.log(BACKEND_URL);
+        
+    },[])
+
     const handleAuth = async (e) => {
         e.preventDefault();
         if(mode==='SignIn'){
@@ -48,13 +52,6 @@ const Auth = () => {
         }
 
     }
-
-    useEffect(()=>{
-        console.log(BACKEND_URL);
-        console.log(`${BACKEND_URL}user/register`);
-        
-
-    },[username])
 
   return (
     <div className='relative bg-red-300 h-screen px-4 flex justify-center items-center  ' >
