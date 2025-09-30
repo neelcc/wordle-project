@@ -24,12 +24,34 @@ export const AppContextProvider = ({children}) => {
         ["", "", "", "", ""],
         ["", "", "", "", ""],
     ])
-    const [ resultBoard , setResultBoard ] = useState([['','','','',''],['','','','',''], 
-    ["", "", "", "", ""],
+    const [ resultBoard , setResultBoard ] = useState([['','','','',''],
+        ['','','','',''], 
+        ["", "", "", "", ""],
         ["", "", "", "", ""],
         ["", "", "", "", ""],
         ["", "", "", "", ""],
     ])
+    const initialKeyColors = {
+        Q: "bg-gray-200", W: "bg-gray-200", E: "bg-gray-200", R: "bg-gray-200",
+        T: "bg-gray-200", Y: "bg-gray-200", U: "bg-gray-200", I: "bg-gray-200",
+        O: "bg-gray-200", P: "bg-gray-200",
+        A: "bg-gray-200", S: "bg-gray-200", D: "bg-gray-200", F: "bg-gray-200",
+        G: "bg-gray-200", H: "bg-gray-200", J: "bg-gray-200", K: "bg-gray-200",
+        L: "bg-gray-200",
+        Z: "bg-gray-200", X: "bg-gray-200", C: "bg-gray-200", V: "bg-gray-200",
+        B: "bg-gray-200", N: "bg-gray-200", M: "bg-gray-200", CX: "bg-gray-200", ENTER: "bg-gray-200"
+      };
+
+    const [keyColors, setKeyColors] = useState(initialKeyColors);
+
+    
+    useEffect(()=>{
+        if(token!==null)   {
+          getPoints()
+          console.log("boardyyy",resultBoard);
+        }
+    },[token])
+
     
     
     const getPoints = async () => {
@@ -49,12 +71,6 @@ export const AppContextProvider = ({children}) => {
     }
 
     
-    useEffect(()=>{
-        if(token!==null)   {
-          getPoints()
-          console.log("boardyyy",resultBoard);
-        }
-    },[token])
 
 
     const handleStartGame = async () => {
@@ -98,13 +114,50 @@ export const AppContextProvider = ({children}) => {
         }
     }
 
+    // helper function: decides new color based on old color and result
+    const getNewColor = (oldColor, status) => {
+    const colorMap = {
+      "+": "bg-green-500",   // correct position
+      "*": "bg-yellow-300",  // in word, wrong place
+      "-": "bg-red-300"      // not in word
+    };
+  
+    const newColor = colorMap[status];
+  
+    // priority logic (don't downgrade colors)
+    if (oldColor === "bg-green-500") return oldColor; // stay green
+    if (oldColor === "bg-yellow-300" && newColor === "bg-red-300") return oldColor; // don't downgrade yellow -> red
+    return newColor || oldColor; // fallback: keep old if status undefined
+    };
+  
+
 
     const UpdateResultBoard = (resultRow) => {
-        console.log("heu");
         
         setResultBoard(
             prevBoard => prevBoard.map((row,i) => i===selectedRow ? resultRow : row )
         )
+
+        setKeyColors(prevColors => {
+            const updatedColors = { ...prevColors };
+          
+            // iterate through board + resultBoard
+            for (let i = 0; i < board.length; i++) {
+              for (let j = 0; j < board[i].length; j++) {
+                const letter = board[i][j];
+                const status = resultRow[j];
+          
+                if (letter) {
+                  const oldColor = updatedColors[letter] || "bg-gray-200";
+                  updatedColors[letter] = getNewColor(oldColor, status);
+                }
+              }
+            }   
+          
+            return updatedColors;
+          });
+          
+
 
     }
 
@@ -118,8 +171,16 @@ export const AppContextProvider = ({children}) => {
             ["", "", "", "", ""],
             ["", "", "", "", ""],
           ])
+        setResultBoard([['','','','',''],
+            ['','','','',''], 
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ])
           navigate('/')
           setGameId(null)
+          setAns('')
           localStorage.removeItem('gameId')
     }
 
@@ -131,6 +192,19 @@ export const AppContextProvider = ({children}) => {
         setShowResultModal((prev)=>!prev)
         setIsWon(false)
         handleStartGame()
+        setResultBoard([['','','','',''],
+            ['','','','',''], 
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ])
+        setBoard([['','','','',''],['','','','',''], 
+                ["", "", "", "", ""],
+                ["", "", "", "", ""],
+                ["", "", "", "", ""],
+                ["", "", "", "", ""],
+              ])
     }
 
 
@@ -164,7 +238,9 @@ export const AppContextProvider = ({children}) => {
         handlePlayAgain,
         ans,
         isWon,
-        setIsWon
+        setIsWon,
+        keyColors,
+        setKeyColors
     }
 
     return (

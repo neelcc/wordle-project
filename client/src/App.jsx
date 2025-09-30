@@ -7,11 +7,12 @@ import { ToastContainer } from 'react-toastify';
 import Home from './page/Home'
 import { AppContext } from './context/AppContext'
 import Modal from './components/Modal'
+import Footer from './components/Footer'
 
 const App = () => {
   const { showResultModal } = useContext(AppContext)
   return (
-    <div className=' relative ' >
+    <div className='relative ' >
       <Heading/>
       {
         showResultModal && <Modal/>
@@ -22,6 +23,7 @@ const App = () => {
           <Route path='/playground' element={<Playground/>}  />
           <Route path='/auth' element={<Auth/>}  />
         </Routes>
+      <Footer/>
     </div>
   )
 }

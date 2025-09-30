@@ -1,13 +1,15 @@
 import { CircleX } from "lucide-react";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { Bounce, toast } from "react-toastify";
 
 
 const Keyboard = () => {
     
-    const { setSelectedKey, setBoard, board, selectedRow, handleGuess, setSelectedRow, selectedKey } = useContext(AppContext)
-    
+    const { setSelectedKey, setBoard, board, keyColors, selectedRow, handleGuess, setSelectedRow, selectedKey } = useContext(AppContext)
+    const [ keyboardOne, setKeyboardOne ] = useState(["Q","W","E","R","T","Y","U","I","O","P"])
+    const [ keyboardTwo, setKeyboardTwo ] = useState(["A","S","D","F","G","H","J","K","L" ])
+    const [ keyboardThree, setKeyboardThree ] = useState(["ENTER","Z","X","C","V","B","N","M","CX"])
   
 
     const UpdateBoard = (letter) => {
@@ -69,23 +71,23 @@ const Keyboard = () => {
   return (
     <div className="space-y-2 px-2 ">
   <div className="flex justify-center gap-1">
-    {["Q","W","E","R","T","Y","U","I","O","P"].map((k,idx) => (
-      <div row-no={1}  onClick={()=>handleKey(k)} key={`row-1-${k}-${idx}`}  className=" cursor-pointer min-h-9 text-xl min-w-7 bg-red-50 rounded-md flex justify-center items-center font-bold text-gray-700">{k}</div>
+    {keyboardOne.map((k,idx) => (
+      <div row-no={1}  onClick={()=>handleKey(k)} key={`row-1-${k}-${idx}`}  className={` cursor-pointer min-h-9 text-xl min-w-7 ${keyColors[k]||"bg-color-200"} rounded-md flex justify-center items-center font-bold text-gray-700`}>{k}</div>
     ))}
   </div>
 
   <div className="flex justify-center gap-1">
-    {["A","S","D","F","G","H","J","K","L" ].map((k,idx) => (
-      <div row-no={2}  onClick={()=>handleKey(k)} key={`row-2-${k}-${idx}`}  className={`min-h-9 text-xl bg-red-50 rounded-md flex cursor-pointer justify-center items-center min-w-7 font-bold text-gray-700 `}>
+    {keyboardTwo.map((k,idx) => (
+      <div row-no={2}  onClick={()=>handleKey(k)} key={`row-2-${k}-${idx}`}  className={` ${keyColors[k]||"bg-color-200"} min-h-9 text-xl  rounded-md flex cursor-pointer justify-center items-center min-w-7 font-bold text-gray-700 `}>
         {k}
       </div>
     ))}
   </div>
 
   <div  className="flex justify-center gap-1">
-    {["ENTER","Z","X","C","V","B","N","M","CX"].map((k,idx) => (
-      <div row-no={3}  onClick={()=>handleKey(k)} key={`row-3-${k}-${idx}`}  className={`min-h-9 text-xl bg-red-50 rounded-md flex justify-center cursor-pointer items-center font-bold text-gray-700 ${k==="CX" || k==="ENTER" ? "px-1" : "min-w-7"}`}>
-        { k==="CX" ? <CircleX height={18} /> : k }
+    {keyboardThree.map((k,idx) => (
+      <div row-no={3}  onClick={()=>handleKey(k)} key={`row-3-${k}-${idx}`}  className={`min-h-9 ${keyColors[k]||"bg-gray-200"} text-xl  rounded-md flex justify-center cursor-pointer items-center font-bold text-gray-700 ${k==="CX" || k==="ENTER" ? "px-1" : "min-w-7"}`}>
+        { k==="CX" ? <CircleX height={18}  /> : k }
       </div>
     ))}
   </div>    
