@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import Auth from './page/auth'
+import Auth from './page/Auth'
 import Heading from './components/Heading'
 import Playground from './page/Playground'
 import { ToastContainer } from 'react-toastify';
