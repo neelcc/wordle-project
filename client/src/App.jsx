@@ -1,15 +1,21 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Auth from './page/auth'
 import Heading from './components/Heading'
 import Playground from './page/Playground'
 import { ToastContainer } from 'react-toastify';
 import Home from './page/Home'
+import { AppContext } from './context/AppContext'
+import Modal from './components/Modal'
 
 const App = () => {
+  const { showResultModal } = useContext(AppContext)
   return (
-    <div>
+    <div className=' relative ' >
       <Heading/>
+      {
+        showResultModal && <Modal/>
+      }
       <ToastContainer position='top-right' style={{paddingTop:"38px" , paddingLeft:"10px" , paddingRight:'10px' }} />
         <Routes>
           <Route path='/' element={<Home/>}  />
@@ -19,5 +25,5 @@ const App = () => {
     </div>
   )
 }
-
+  
 export default App

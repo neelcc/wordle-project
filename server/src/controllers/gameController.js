@@ -5,7 +5,7 @@ import { five_char_words } from "../utils/word-list.js";
 
 
 export const newWord = async (req,res) => {
-    console.log("hi");
+    console.log("working");
     
     const userToken = req.user
     const user = await userModel.findOne({username : userToken.username});
@@ -13,6 +13,9 @@ export const newWord = async (req,res) => {
     const randomIdx = Math.floor(Math.random() * five_char_words.length );
     const randomWord = five_char_words[randomIdx];
     const gameId = generateGameId()
+
+    console.log("gameid ",gameId);
+    
 
     await gameModel.create({
         gameId : gameId,
@@ -23,7 +26,7 @@ export const newWord = async (req,res) => {
     await userModel.updateOne(user,{$inc : {"games_played" : 1 } })
     return res.status(200).send({
         success : true,
-        message : "New Word!",
+        message : "New Word!",  
         user,
         gameId: gameId
     })
@@ -36,7 +39,7 @@ export const validateWord = async (req,res) => {
 
     const user = await userModel.findOne({username : userToken.username});
 
-    const { userWord , gameId } = req.body;
+    const { userWord , gameId, row } = req.body;
 
     const game = await gameModel.findOne({ gameId })
     
@@ -57,15 +60,32 @@ export const validateWord = async (req,res) => {
             message : "Correct Guess!",
             success : true,
             won : true,
-            user
+            user,
+            result : ["+","+","+","+","+"]
         })
     }
 
+    console.log("row is",row);
+    
+
    const result =  checkWord(userWord,correctedWord)
 
+   if(row===5 && userWord!==correctedWord.toUpperCase() )
+   {
+    return res.status(200).send({
+        success:true,
+        message : "Working",
+        result,
+        ans: correctedWord,
+        won : "Lose"
+    })
+   }
 
     return res.status(200).send({
+        success:true,
         message : "Working",
-        result
+        result,
+        ans: correctedWord,
+        won : false
     })
 }
