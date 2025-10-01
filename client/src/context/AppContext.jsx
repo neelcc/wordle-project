@@ -87,11 +87,13 @@ export const AppContextProvider = ({children}) => {
         if(data.success){
             setGameId(data.gameId)
             localStorage.setItem('gameId',data.gameId)
+            setSelectedRow(0)
         }
         
     }
 
     const handleGuess = async (Word) => {
+        
         const { data } = await axios.post(`${BACKEND_URL}wordle/validate-word`,{
             userWord : Word,
             gameId : gameId,
@@ -101,6 +103,7 @@ export const AppContextProvider = ({children}) => {
                 'Authorization': 'Bearer ' + token
             }
         })
+        
         if(data.success){
             console.log(data.result);
             console.log(data.message);  
@@ -108,12 +111,16 @@ export const AppContextProvider = ({children}) => {
             UpdateResultBoard(data.result);
             if(data.won===true){
                 setAns(data.ans);
-                setShowResultModal(true)
+                setTimeout(()=>{
+                    setShowResultModal(true)
+                },1000)
             }
             if(data.won==='Lose'){
                 setIsWon(false)
                 setAns(data.ans)
-                setShowResultModal(true)
+                setTimeout(()=>{
+                    setShowResultModal(true)
+                },1000)
             }
         }
     }
@@ -197,22 +204,22 @@ export const AppContextProvider = ({children}) => {
         setShowResultModal((prev)=>!prev)
         setIsWon(false)
         setKeyColors(initialKeyColors)
-        handleStartGame()
         setResultBoard([['','','','',''],
             ['','','','',''], 
             ["", "", "", "", ""],
             ["", "", "", "", ""],
             ["", "", "", "", ""],
             ["", "", "", "", ""],
-            ])
+        ])
         setBoard([['','','','',''],['','','','',''], 
-                ["", "", "", "", ""],
-                ["", "", "", "", ""],
-                ["", "", "", "", ""],
-                ["", "", "", "", ""],
-              ])
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+        ])
+        handleStartGame()
     }
-
+    
 
 
 

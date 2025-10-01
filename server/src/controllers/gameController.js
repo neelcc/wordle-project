@@ -61,7 +61,8 @@ export const validateWord = async (req,res) => {
             success : true,
             won : true,
             user,
-            result : ["+","+","+","+","+"]
+            result : ["+","+","+","+","+"],
+            ans :correctedWord
         })
     }
 

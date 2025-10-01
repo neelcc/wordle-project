@@ -76,7 +76,7 @@ const Auth = () => {
                 <input type="password" value={password} onChange={(e)=> setPassword(e.target.value) }  className=' border-2 mt-2 outline-none bg- border-white  rounded-md px-2 py-1 text-sm w-full '  placeholder='Enter your Password'   />
             </div>
             <button className=' text-center mt-2 w-full py-2 font-bold bg-yellow-100 rounded-md'>{ mode==='Login' ? 'Login' : 'Sign in' }</button>
-            <p onClick={()=>{ mode==='Login' ? setMode('SignIn') : setMode('Login') }} className=' text-blue-800 text-center text-sm mt-2 '>{ mode==='Login' ? 'New Account? Sign in In First ' : 'Already have an Account?'}</p>
+            <p onClick={()=>{ mode==='Login' ? setMode('SignIn') : setMode('Login') }} className='cursor-pointer     text-blue-800 text-center text-sm mt-2 '>{ mode==='Login' ? 'New Account? Sign in In First ' : 'Already have an Account?'}</p>
             </form>
         </div>
     </div>

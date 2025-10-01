@@ -1,8 +1,10 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { AppContext } from '../context/AppContext'
 
 const Modal = () => {
   const { handlePlayAgain, ans, isWon } = useContext(AppContext);
+
+
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
