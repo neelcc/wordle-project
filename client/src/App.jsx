@@ -7,7 +7,7 @@ import Home from './page/Home'
 import { AppContext } from './context/AppContext'
 import Modal from './components/Modal'
 import Footer from './components/Footer'
-import Auth from './page/auth';
+import Auth from './page/Auth';
 
 const App = () => {
   const { showResultModal } = useContext(AppContext)
