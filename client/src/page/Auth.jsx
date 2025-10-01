@@ -19,6 +19,10 @@ const Auth = () => {
 
     const handleAuth = async (e) => {
         e.preventDefault();
+        if (!username || !password) {
+            alert("Please fill all fields");
+            return;
+          }
         if(mode==='SignIn'){
         const { data } = await axios.post(`${BACKEND_URL}user/register`,{
             username,
