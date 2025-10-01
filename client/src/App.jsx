@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
-import { Routes, Route } from 'react-router-dom'
-import Heading from './components/Heading'
-import Playground from './page/Playground'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Heading from './components/Heading.jsx'
+import Playground from './page/Playground.jsx'
 import { ToastContainer } from 'react-toastify';
-import Home from './page/Home'
+import Home from './page/Home.jsx'
 import { AppContext } from './context/AppContext'
-import Modal from './components/Modal'
-import Footer from './components/Footer'
-import Auth from './page/Auth';
+import Modal from './components/Modal.jsx'
+import Footer from './components/Footer.jsx'
+import Auth from './page/Auth.jsx';
 
 const App = () => {
   const { showResultModal } = useContext(AppContext)
