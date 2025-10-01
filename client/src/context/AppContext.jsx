@@ -9,7 +9,6 @@ export const AppContextProvider = ({children}) => {
     
     const navigate = useNavigate()
     const BACKEND_URL=import.meta.env.VITE_ONRENDER_URL
-
     const [ gameId , setGameId ] = useState(localStorage.getItem('gameId'))
     const [ token , setToken ] = useState(localStorage.getItem('token'))
     const [ user , setUser ] = useState(null)
@@ -245,7 +244,8 @@ export const AppContextProvider = ({children}) => {
         isWon,
         setIsWon,
         keyColors,
-        setKeyColors
+        setKeyColors,
+        BACKEND_URL
     }
 
     return (

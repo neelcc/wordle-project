@@ -7,10 +7,9 @@ const Auth = () => {
     const [ mode , setMode ] = useState('Login');
     const [ username, setUsername ] = useState('')
     const [ password, setPassword ] = useState('')
-    const BACKEND_URL=import.meta.env.VITE_ONRENDER_URL
     const [ dummyState , setDummyState ] = useState(null)
     const navigate = useNavigate()
-    const { setUser , setToken  } = useContext(AppContext)
+    const { setUser , setToken, BACKEND_URL  } = useContext(AppContext)
 
 
     useEffect(()=>{
