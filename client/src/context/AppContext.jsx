@@ -185,6 +185,7 @@ export const AppContextProvider = ({children}) => {
           navigate('/')
           setGameId(null)
           setAns('')
+          setKeyColors(initialKeyColors)
           localStorage.removeItem('gameId')
     }
 
@@ -195,6 +196,7 @@ export const AppContextProvider = ({children}) => {
         navigate('/playground')
         setShowResultModal((prev)=>!prev)
         setIsWon(false)
+        setKeyColors(initialKeyColors)
         handleStartGame()
         setResultBoard([['','','','',''],
             ['','','','',''], 
