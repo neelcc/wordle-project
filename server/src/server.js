@@ -12,11 +12,19 @@ app.use(express.json())
 
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://wordle-project-flax.vercel.app"
+    "https://wordle-project-flax.vercel.app",
+    "https://wordle-project-hfq2xd1mq-neel-chaurasiyas-projects.vercel.app"
   ];
   
   app.use(cors({
-    origin: allowedOrigins, // allow these two origins
+    origin: function(origin, callback) {
+      if (!origin) return callback(null, true); // allow curl or mobile
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
   }));
