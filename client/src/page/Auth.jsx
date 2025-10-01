@@ -7,9 +7,10 @@ const Auth = () => {
     const [ mode , setMode ] = useState('Login');
     const [ username, setUsername ] = useState('')
     const [ password, setPassword ] = useState('')
+    const BACKEND_URL=import.meta.env.VITE_ONRENDER_URL
+    const [ dummyState , setDummyState ] = useState(null)
     const navigate = useNavigate()
     const { setUser , setToken  } = useContext(AppContext)
-    const BACKEND_URL=import.meta.env.VITE_ONRENDER_URL
 
 
     useEffect(()=>{
@@ -19,11 +20,16 @@ const Auth = () => {
 
     const handleAuth = async (e) => {
         e.preventDefault();
+        
+        console.log("url is ",BACKEND_URL);
+        console.log(`${BACKEND_URL}user/register`);
+
         if (!username || !password) {
             alert("Please fill all fields");
             return;
           }
         if(mode==='SignIn'){
+        
         const { data } = await axios.post(`${BACKEND_URL}user/register`,{
             username,
             password

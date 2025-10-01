@@ -9,10 +9,18 @@ import { five_char_words } from './utils/word-list.js';
 
 const app = express();
 app.use(express.json())
-app.use(cors({
-    origin: ["https://wordle-project-flax.vercel.app"], 
+
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://wordle-project-flax.vercel.app"
+  ];
+  
+  app.use(cors({
+    origin: allowedOrigins, // allow these two origins
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
-}))
+  }));
+
 const PORT = process.env.PORT || 3000
 
 
