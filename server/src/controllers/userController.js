@@ -39,12 +39,13 @@ export const userRegister = async (req,res) =>{
         password:hashedPassword
     })
 
+
     const token = await jwt.sign({username},process.env.JWT_SECRET,{ expiresIn: "24h" })
 
 
     res.status(200).send({
         success:true,
-        user,
+        user : { user : user.username},
         token
     })
 
@@ -54,6 +55,9 @@ export const userRegister = async (req,res) =>{
 export const userLogin = async (req,res) => {
 
     const { username , password } = req.body
+    
+    console.log("ilove");
+    
 
     if(!username) {
         return res.status(400).send({
@@ -96,7 +100,7 @@ export const userLogin = async (req,res) => {
         success : true,
         message : "User Signed In",
         token,
-        isExist
+        user : { user : isExist.username}
     })
     
 }
@@ -104,15 +108,14 @@ export const userLogin = async (req,res) => {
 export const getPoints = async (req,res) => {
 
     const userToken = req.user;
-    console.log("hafi");
+    const response = await userModel.findOne({username : userToken.username}); 
+    const { password , ...UserwoPassword } = response.toObject()    
+
+    console.log(UserwoPassword);
     
-    console.log(userToken);
-    
-    const user = await userModel.findOne({username : userToken.username});
-    
-    
-    return res.status(200).json({
+
+      return res.status(200).json({
         success:true,   
-        user
+        user: UserwoPassword
     })
 }

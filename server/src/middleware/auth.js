@@ -7,7 +7,8 @@ export const auth =  (req,res,next) => {
         const token = authHeaders && authHeaders.split(' ')[1]
 
         
-
+        console.log("Hey");
+        
         console.log(token);
         
 

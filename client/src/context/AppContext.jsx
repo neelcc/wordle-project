@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
-import { FileChartColumnIncreasingIcon } from "lucide-react";
 
 export const AppContext = createContext();
 
@@ -40,10 +39,13 @@ export const AppContextProvider = ({children}) => {
         L: "bg-gray-200",
         Z: "bg-gray-200", X: "bg-gray-200", C: "bg-gray-200", V: "bg-gray-200",
         B: "bg-gray-200", N: "bg-gray-200", M: "bg-gray-200", CX: "bg-gray-200", ENTER: "bg-gray-200"
-      };
-
+    };
     const [keyColors, setKeyColors] = useState(initialKeyColors);
-
+    const [error, setError] = useState("");
+    const [showPopup, setShowPopup] = useState(true);
+    const [ AuthLoaders , setAuthLoaders ] = useState(false)    
+    const [ startGameLoader , setStartGameLoader ] = useState(false)
+    const [ getUserLoader, setGetUserLoader ] = useState(false)
     
     useEffect(()=>{
         if(token!==null)   {
@@ -52,32 +54,30 @@ export const AppContextProvider = ({children}) => {
         }
     },[token])
 
-    useEffect(()=>{
-        console.log(BACKEND_URL);
-        
-    },[])
-    
+  
     
     const getPoints = async () => {
+        setGetUserLoader(true)
         const { data } = await axios.get(`${BACKEND_URL}user/points`,{
             headers: {
                 'Authorization': 'Bearer ' + token
             }
         })
         if(data.success){
+            console.log(data);
+            
+            console.log(data.user)
             setUser(data.user)
             console.log(data.user);
-            
-        }
+            setGetUserLoader(false)
+        }   
         else{
             console.log("Error in getPoints Block");
         }
     }
 
-    
-
-
     const handleStartGame = async () => {
+        setAuthLoaders(true)
         const { data } = await axios.get(`${BACKEND_URL}wordle/new-word`,{
             headers : {
                 'Authorization' : 'Bearer ' + token 
@@ -88,6 +88,7 @@ export const AppContextProvider = ({children}) => {
             setGameId(data.gameId)
             localStorage.setItem('gameId',data.gameId)
             setSelectedRow(0)
+            setStartGameLoader(false)    
         }
         
     }
@@ -125,7 +126,6 @@ export const AppContextProvider = ({children}) => {
         }
     }
 
-    // helper function: decides new color based on old color and result
     const getNewColor = (oldColor, status) => {
     const colorMap = {
       "+": "bg-green-500",   // correct position
@@ -141,8 +141,6 @@ export const AppContextProvider = ({children}) => {
     return newColor || oldColor; // fallback: keep old if status undefined
     };
   
-
-
     const UpdateResultBoard = (resultRow) => {
         
         setResultBoard(
@@ -200,7 +198,6 @@ export const AppContextProvider = ({children}) => {
     const handlePlayAgain = () => {
         localStorage.removeItem('gameId')
         setGameId(null)
-        navigate('/playground')
         setShowResultModal((prev)=>!prev)
         setIsWon(false)
         setKeyColors(initialKeyColors)
@@ -217,6 +214,7 @@ export const AppContextProvider = ({children}) => {
             ["", "", "", "", ""],
             ["", "", "", "", ""],
         ])
+        setStartGameLoader(true)
         handleStartGame()
     }
     
@@ -254,7 +252,17 @@ export const AppContextProvider = ({children}) => {
         setIsWon,
         keyColors,
         setKeyColors,
-        BACKEND_URL
+        BACKEND_URL,
+        error,
+        setError,
+        showPopup,
+        setShowPopup,
+        AuthLoaders,
+        setAuthLoaders,
+        setStartGameLoader,
+        startGameLoader,
+        getUserLoader,
+        setGetUserLoader
     }
 
     return (
