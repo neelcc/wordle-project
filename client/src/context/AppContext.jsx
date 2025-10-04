@@ -78,7 +78,7 @@ export const AppContextProvider = ({children}) => {
     }
 
     const handleStartGame = async () => {
-        setAuthLoaders(true)
+        setStartGameLoader(true)
         const { data } = await axios.get(`${BACKEND_URL}wordle/new-word`,{
             headers : {
                 'Authorization' : 'Bearer ' + token 
