@@ -2,6 +2,7 @@ import gameModel from "../model/gameModel.js";
 import userModel from "../model/userModel.js";
 import { checkWord, generateGameId } from "../utils/validate-word.js";
 import { five_char_words } from "../utils/word-list.js";
+import { userRegister } from "./userController.js";
 
 
 export const newWord = async (req,res) => {
@@ -23,17 +24,20 @@ export const newWord = async (req,res) => {
         user : user._id
     })
 
-    await userModel.updateOne(user,{$inc : {"games_played" : 1 } })
+    const UpdatedUser = await userModel.findOneAndUpdate(user,{$inc : {"games_played" : 1 } } , { new:true })
+
+    const { password , ...UserwoPassword } = UpdatedUser.toObject() 
+
     return res.status(200).send({
         success : true,
         message : "New Word!",  
-        user,
+        user : UserwoPassword,
         gameId: gameId
     })
 
 }
 
-export const validateWord = async (req,res) => {
+export const    validateWord = async (req,res) => {
 
     const userToken = req.user;
 
@@ -54,13 +58,21 @@ export const validateWord = async (req,res) => {
 
     if(userWord===correctedWord.toUpperCase() ){
 
-        await userModel.updateOne( user, { $inc:{"games_won":1} }) 
+    const UpdatedUser = await userModel.findOneAndUpdate( {_id: user._id }, { $inc:{"games_won":1} } , {new: true}) 
 
+    console.log("_______________________");
+    
+    console.log(UpdatedUser);
+    
+    
+    const { password , ...UserwoPassword } = UpdatedUser.toObject()    
+
+    
         return res.status(200).send({
             message : "Correct Guess!",
             success : true,
             won : true,
-            user,
+            user : UserwoPassword ,
             result : ["+","+","+","+","+"],
             ans :correctedWord
         })

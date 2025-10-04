@@ -17,12 +17,14 @@ export const AppContextProvider = ({children}) => {
     const [ showResultModal , setShowResultModal ] = useState(false)
     const [ isWon, setIsWon ] = useState(true)
     const [ resultRow, setResultRow ] = useState(['','','','',''])
-    const [ board , setBoard ] = useState([['','','','',''],['','','','',''], 
-        ["", "", "", "", ""],
-        ["", "", "", "", ""],
-        ["", "", "", "", ""],
-        ["", "", "", "", ""],
-    ])
+    const [ board , setBoard ] = useState([
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+          ])
     const [ resultBoard , setResultBoard ] = useState([['','','','',''],
         ['','','','',''], 
         ["", "", "", "", ""],
@@ -54,7 +56,6 @@ export const AppContextProvider = ({children}) => {
         }
     },[token])
 
-  
     
     const getPoints = async () => {
         setGetUserLoader(true)
@@ -65,10 +66,10 @@ export const AppContextProvider = ({children}) => {
         })
         if(data.success){
             console.log(data);
-            
             console.log(data.user)
             setUser(data.user)
             console.log(data.user);
+
             setGetUserLoader(false)
         }   
         else{
@@ -105,13 +106,28 @@ export const AppContextProvider = ({children}) => {
             }
         })
         
+        console.log(data);
+        
+
         if(data.success){
             console.log(data.result);
             console.log(data.message);  
             setResultRow(data.result)
             UpdateResultBoard(data.result);
             if(data.won===true){
+                setIsWon(true)
                 setAns(data.ans);
+                setUser(prevUser => ({
+                    ...prevUser,
+                    games_played: data.user.games_played,
+                    games_won: data.user.games_won
+                }) )
+
+                console.log(user);
+                
+                
+                console.log(data.user.games_won);
+                
                 setTimeout(()=>{
                     setShowResultModal(true)
                 },1000)
@@ -125,6 +141,30 @@ export const AppContextProvider = ({children}) => {
             }
         }
     }
+
+
+    const goToHome = () => {
+        localStorage.removeItem('gameId')
+        setGameId(null)
+        setShowResultModal((prev)=>!prev)
+        setIsWon(false)
+        setKeyColors(initialKeyColors)
+        setResultBoard([['','','','',''],
+            ['','','','',''], 
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+        ])
+        setBoard([['','','','',''],['','','','',''], 
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+        ])
+    }
+
+
 
     const getNewColor = (oldColor, status) => {
     const colorMap = {
@@ -142,33 +182,48 @@ export const AppContextProvider = ({children}) => {
     };
   
     const UpdateResultBoard = (resultRow) => {
+        console.log("robo",resultRow);
         
         setResultBoard(
             prevBoard => prevBoard.map((row,i) => i===selectedRow ? resultRow : row )
         )
 
+        console.log(resultBoard);
+        console.log("------------------");
+        console.log(board);
+        console.log("------------------");
+        console.log(resultRow);
+        console.log("------------------");
+        console.log(selectedRow);    
+        console.log("------------------");
+        
+
+        
         setKeyColors(prevColors => {
             const updatedColors = { ...prevColors };
           
             // iterate through board + resultBoard
-            for (let i = 0; i < board.length; i++) {
-              for (let j = 0; j < board[i].length; j++) {
-                const letter = board[i][j];
+              for (let j = 0; j < board[selectedRow].length; j++) {
+                const letter = board[selectedRow][j];
                 const status = resultRow[j];
-          
+
+                console.log("letter",letter);
+                console.log("status",status);
+                
+
                 if (letter) {
                   const oldColor = updatedColors[letter] || "bg-gray-200";
+                  console.log("oldColor",oldColor);
+                  
                   updatedColors[letter] = getNewColor(oldColor, status);
+                  console.log("updateColor[letter]",updatedColors[letter]);
                 }
               }
-            }   
+            
           
             return updatedColors;
           });
-          
-
-
-    }
+        }
 
     const handleLogout = () => {
         localStorage.removeItem('token')
@@ -197,6 +252,7 @@ export const AppContextProvider = ({children}) => {
 
     const handlePlayAgain = () => {
         localStorage.removeItem('gameId')
+        localStorage.removeItem('board')
         setGameId(null)
         setShowResultModal((prev)=>!prev)
         setIsWon(false)
@@ -262,7 +318,8 @@ export const AppContextProvider = ({children}) => {
         setStartGameLoader,
         startGameLoader,
         getUserLoader,
-        setGetUserLoader
+        setGetUserLoader,
+        goToHome
     }
 
     return (

@@ -58,8 +58,10 @@ const Keyboard = () => {
           newBoard[selectedRow][colIndex] = letter
         }
 
+
         return newBoard
       })
+      
     
     };
 
