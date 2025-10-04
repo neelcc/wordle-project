@@ -247,6 +247,8 @@ export const AppContextProvider = ({children}) => {
           setAns('')
           setKeyColors(initialKeyColors)
           localStorage.removeItem('gameId')
+          setAuthLoaders(false)
+          setStartGameLoader(false)
     }
 
 

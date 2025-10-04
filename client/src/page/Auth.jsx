@@ -42,8 +42,8 @@ const Auth = () => {
                 localStorage.setItem("token", data.token);
                 setToken(data.token);
                 setUser(data.user);
-                navigate("/playground");
                 setAuthLoaders(false)
+                navigate("/playground");
             } else {
                 setAuthLoaders(false)
                 console.log(`Something went wrong in ${mode} block`);
