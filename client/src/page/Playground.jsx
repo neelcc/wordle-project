@@ -21,7 +21,7 @@ const Playground = () => {
       <button onClick={handleStartGame} className='shadow-md bg-yellow-200 px-4 py-1 mt-13 text-2xl font-medium rounded-lg' >{ startGameLoader ? <FiLoader className='transition-all duration-300 animate-spin mx-12 my-1 ' /> : "Start Game!"}</button>
       
       <button onClick={handleLeaderboard} className='shadow-md bg-yellow-200 px-4 py-1 mt-4 text-2xl font-medium rounded-lg' >
-          { lbLoader ? <FiLoader className='transition-all duration-300 animate-spin mx-12 my-1 ' /> : "Leaderboard"  }
+          { lbLoader ? <FiLoader className='transition-all duration-300 animate-spin mx-12 my-1 ' /> : "Leaderboards!"  }
       </button>
       </>
     }
