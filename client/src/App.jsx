@@ -7,7 +7,8 @@ import Home from './page/Home.jsx'
 import { AppContext } from './context/AppContext'
 import Modal from './components/Modal.jsx'
 import Footer from './components/Footer.jsx'
-import Auth from './page/Auth.jsx';
+import Leaderboard from './page/Leaderboard.jsx';
+import Authentication from './page/Authentication.jsx';
 
 const App = () => {
   const { showResultModal } = useContext(AppContext)
@@ -24,7 +25,8 @@ const App = () => {
           path='/playground'
           element={localStorage.getItem("token") ? <Playground /> : <Navigate to="/auth" />}
           />
-          <Route path='/auth' element={<Auth/>}  />
+          <Route path='/auth' element={<Authentication/>}  />
+          <Route path='/leaderboard' element={<Leaderboard/>}  />
         </Routes>
       <Footer/>
     </div>

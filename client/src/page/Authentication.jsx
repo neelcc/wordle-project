@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import ErrorPopup from '../components/ErrorPopup';
 import { FiLoader } from "react-icons/fi";
 
-const Auth = () => {
+const Authentication = () => {
     const [ mode , setMode ] = useState('SignIn');
     const [ username, setUsername ] = useState('')
     const [ password, setPassword ] = useState('')
@@ -15,7 +15,6 @@ const Auth = () => {
 
     useEffect(()=>{
     },[])   
-
     const handleAuth = async (e) => {
         e.preventDefault();
         if (!username || !password) {
@@ -86,4 +85,4 @@ const Auth = () => {
   )
 }
 
-export default Auth
+export default Authentication

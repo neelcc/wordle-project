@@ -48,7 +48,8 @@ export const AppContextProvider = ({children}) => {
     const [ AuthLoaders , setAuthLoaders ] = useState(false)    
     const [ startGameLoader , setStartGameLoader ] = useState(false)
     const [ getUserLoader, setGetUserLoader ] = useState(false)
-    
+    const [ leaderboard , setLeaderboard ] = useState({})
+    const [ lbLoader , setLbLoader ] = useState(false)
     useEffect(()=>{
         if(token!==null)   {
           getPoints()
@@ -56,6 +57,27 @@ export const AppContextProvider = ({children}) => {
         }
     },[token])
 
+
+    const handleLeaderboard = async () => {
+        setLbLoader(true)
+        console.log("hey");
+        
+        const  { data }  = await axios.get(`${BACKEND_URL}wordle/leaderboard`,{
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+
+        console.log(data);
+        if(data.success){
+            setLeaderboard(data.leaderboard)
+            navigate('/leaderboard')
+            setLbLoader(false)
+            console.log(data.leaderboard);
+        }
+        
+    }
+    
     
     const getPoints = async () => {
         setGetUserLoader(true)
@@ -69,7 +91,6 @@ export const AppContextProvider = ({children}) => {
             console.log(data.user)
             setUser(data.user)
             console.log(data.user);
-
             setGetUserLoader(false)
         }   
         else{
@@ -321,7 +342,13 @@ export const AppContextProvider = ({children}) => {
         startGameLoader,
         getUserLoader,
         setGetUserLoader,
-        goToHome
+        goToHome,
+        leaderboard,
+        setLeaderboard,
+        handleLeaderboard,
+        lbLoader,
+        setLbLoader,
+        handleLeaderboard
     }
 
     return (

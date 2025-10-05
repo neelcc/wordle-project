@@ -37,7 +37,7 @@ export const newWord = async (req,res) => {
 
 }
 
-export const    validateWord = async (req,res) => {
+export const validateWord = async (req,res) => {
 
     const userToken = req.user;
 
@@ -101,4 +101,22 @@ export const    validateWord = async (req,res) => {
         ans: correctedWord,
         won : false
     })
+}
+
+export const leaderBoard = async (req,res) => {
+    const userToken = req.user;
+
+    const user = await userModel.findOne({username : userToken.username})
+
+
+
+    const data = await userModel.find().sort({games_won : -1 }).select('username games_won').limit(5).exec()
+
+    console.log(data);
+    
+    res.status(200).send({
+        success : true,
+        leaderboard : data
+    })
+
 }
